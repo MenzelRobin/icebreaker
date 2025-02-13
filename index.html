@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eisbrecher Fragen</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Nunito", sans-serif;
+        background: #eeeeee;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+      .container {
+        background: #fff;
+        border-radius: 8px;
+        padding: 40px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        width: 100%;
+        text-align: center;
+        transition: transform 0.3s ease;
+      }
+      h1,
+      h2 {
+        color: #40937a;
+        margin-bottom: 20px;
+      }
+      .question {
+        font-size: 1.5em;
+        font-weight: bold;
+        margin: 20px 0;
+        color: #404040;
+        min-height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+      }
+      .question.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      button {
+        background: linear-gradient(45deg, #dc5e40, #ff7f50);
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 10px 20px;
+        font-size: 1em;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+      button:hover {
+        transform: scale(1.02);
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Icebreaker Fragen</h1>
+      <div class="question" id="question"></div>
+      <button onclick="newQuestion()">Neue Frage</button>
+    </div>
+
+    <script>
+      const questions = [
+        "Was hast du dir diese Woche gegönnt?",
+        "Welches Highlight hat dich in dieser Woche besonders gefreut?",
+        "Gibt es einen kleinen Erfolg, auf den du diese Woche besonders stolz bist?",
+        "Was war das Lustigste, das dir in der letzten Woche passiert ist?",
+        "Hast du in den letzten Tagen etwas Neues ausprobiert?",
+        "Welches Buch, welchen Film oder welche Serie würdest du empfehlen?",
+        "Welche Aktivität hilft dir, den Stress der Woche abzubauen?",
+        "Wenn du an das vergangene Wochenende denkst – was war dein persönlicher Moment der Entspannung?",
+        "Welche kleine Überraschung hat dir diese Woche ein Lächeln ins Gesicht gezaubert?",
+        "Gibt es ein Ziel, an dem du aktuell arbeitest?",
+        "Was ist deine Lieblingsbeschäftigung, um den Feierabend zu genießen?",
+        "Welche Musik hat dich diese Woche inspiriert?",
+        "Hast du einen interessanten Podcast oder Blog entdeckt?",
+        "Gibt es einen Ort, den du schon immer besuchen wolltest?",
+        "Was war dein persönlicher 'Aha-Moment' diese Woche?",
+        "Was war dein bestes Team-Erlebnis in letzter Zeit?",
+        "Welche kleine Geste hat deinen Tag erhellt?",
+        "Wie entspannst du dich nach einem anstrengenden Tag?",
+        "Welches Gericht hast du diese Woche ausprobiert oder kochst du gerne?",
+        "Gibt es ein Hobby, das du wieder aufnehmen möchtest?",
+        "Was war das Letzte, das dich wirklich zum Lachen gebracht hat?",
+        "Welchen Film hast du zuletzt gesehen, der dich beeindruckt hat?",
+        "Was ist dein Lieblingsplatz in der Stadt und warum?",
+        "Welcher Urlaubsort steht ganz oben auf deiner Wunschliste?",
+        "Welche drei Worte beschreiben dein aktuelles Lebensgefühl?",
+        "Hast du diese Woche etwas gemacht, das außerhalb deiner Komfortzone lag?",
+        "Welches Essen könntest du jeden Tag essen?",
+        "Was motiviert dich an einem trüben Tag?",
+        "Welches Zitat hat dich in letzter Zeit inspiriert?",
+        "Wie verbringst du deine freie Zeit am liebsten?",
+        "Welches Hobby möchtest du in Zukunft ausprobieren?",
+        "Was war dein bisher größter Erfolg in diesem Jahr?",
+        "Wie definierst du für dich Erfolg?",
+        "Welcher Moment in der Woche hat dich besonders stolz gemacht?",
+        "Hast du ein Lebensmotto? Wenn ja, welches?",
+        "Was bedeutet Teamarbeit für dich?",
+        "Welche kleine Veränderung hat deinen Alltag verbessert?",
+        "Welches Wetter magst du am liebsten und warum?",
+        "Gibt es eine Fähigkeit, die du gerne lernen würdest?",
+        "Was war das Überraschendste, das dir diese Woche begegnet ist?",
+        "Welche Aktivität bringt dich zum Abschalten?",
+        "Wenn du einen Tag lang unsichtbar wärst, was würdest du tun?",
+        "Was ist dein Lieblingsplatz zum Entspannen?",
+        "Wie motivierst du dich, wenn du mal keine Lust hast?",
+        "Welches Getränk genießt du besonders gern?",
+        "Hast du in letzter Zeit etwas Kreatives gemacht? Was?",
+        "Was war das inspirierendste Erlebnis in der letzten Woche?",
+        "Welche kleine Auszeit gönnst du dir regelmäßig?",
+        "Was war dein schönstes Erlebnis am Wochenende?",
+        "Welches Ziel möchtest du in den nächsten Monaten erreichen?",
+        "Wie startest du am liebsten in den Tag?",
+        "Was machst du, um den Kopf freizubekommen?",
+        "Welche App ist für dich unverzichtbar?",
+        "Welches Erlebnis hat dir neue Perspektiven eröffnet?",
+        "Was war dein Highlight in letzter Zeit?",
+        "Welchen Rat würdest du deinem jüngeren Ich geben?",
+        "Welches Hobby hat dich in letzter Zeit überrascht?",
+        "Was ist dein persönliches Erfolgsgeheimnis?",
+        "Wie entspannst du dich nach einem langen Arbeitstag?",
+        "Welches Buch hat deinen Blick auf die Welt verändert?",
+        "Was ist dein Lieblingszitat und warum?",
+        "Welcher Moment in der Woche war für dich magisch?",
+        "Hast du einen besonderen Ort, an dem du neue Energie tankst?",
+        "Was war das Überraschendste, das du diese Woche erlebt hast?",
+        "Welcher Film hat dich zuletzt emotional berührt?",
+        "Was ist deine Lieblingsbeschäftigung am Wochenende?",
+        "Welches Talent besitzt du, das nicht viele kennen?",
+        "Hast du in letzter Zeit eine neue Leidenschaft entdeckt?",
+        "Was ist das Mutigste, das du je getan hast?",
+        "Welche Tradition schätzt du besonders und pflegst du regelmäßig?",
+        "Was war das interessanteste Gespräch, das du diese Woche hattest?",
+        "Welche drei Dinge machen dich glücklich?",
+        "Was hat dich diese Woche positiv überrascht?",
+        "Welches Projekt motiviert dich zurzeit besonders?",
+        "Wie belohnst du dich nach einem erfolgreichen Tag?",
+        "Welches Gericht erinnert dich an deine Kindheit?",
+        "Was war dein schönster Moment in der letzten Woche?",
+        "Welche Musik bringt dich in eine gute Stimmung?",
+        "Was ist dein Geheimtipp für einen gelungenen Abend?",
+        "Welcher kleine Luxus darf in deinem Alltag nicht fehlen?",
+        "Hast du ein Ritual, das dir hilft, den Tag zu meistern?",
+        "Was war das schönste Kompliment, das du diese Woche erhalten hast?",
+        "Wie gehst du mit stressigen Situationen um?",
+        "Welches Erlebnis hat dich in letzter Zeit nachhaltig beeindruckt?",
+        "Was ist dein Lieblingsspruch, der dich motiviert?",
+        "Welches Abenteuer möchtest du in nächster Zeit erleben?",
+        "Was inspiriert dich an deinen Kollegen am meisten?",
+        "Welche kleine Auszeit gönnst du dir in stressigen Zeiten?",
+        "Was war dein Highlight in letzter Zeit?",
+        "Welches Land möchtest du unbedingt bereisen?",
+        "Was ist das Wichtigste, das du diese Woche gelernt hast?",
+        "Wie feierst du deine Erfolge, egal wie klein?",
+        "Welches Geräusch entspannt dich?",
+        "Was war das Unerwartetste, das dir diese Woche passiert ist?",
+        "Welchen Podcast hörst du, wenn du Inspiration brauchst?",
+        "Was ist dein Lieblingsort in deinem Zuhause?",
+        "Welches Hobby würdest du gerne mal ausprobieren?",
+        "Was war dein schönstes Erlebnis in den letzten Monaten?",
+        "Wie entspannst du dich, wenn du gestresst bist?",
+        "Welches Erlebnis hat dich in letzter Zeit überrascht?",
+        "Was motiviert dich jeden Morgen aufzustehen?",
+        "Welche Farbe beschreibt deine aktuelle Stimmung?",
+        "Was ist deine Lieblingsbeschäftigung an einem freien Tag?",
+        "Welches Tier wärst du und warum?",
+        "Was inspiriert dich in deinem Arbeitsalltag?",
+        "Welcher Song bringt dich in Bewegung?",
+        "Welche Jahreszeit magst du am liebsten?",
+        "Was war der beste Ratschlag, den du je erhalten hast?",
+        "Welches Erlebnis möchtest du nie wieder vergessen?",
+        "Was ist dein Geheimrezept für gute Laune?",
+        "Welchen Sport treibst du oder würdest du gerne ausprobieren?",
+        "Was war dein verrücktestes Erlebnis in letzter Zeit?",
+        "Welche kleine Veränderung hat deinen Alltag verbessert?",
+        "Was ist dein Lieblingsritual am Morgen?",
+        "Welcher Ort gibt dir Ruhe und Kraft?",
+        "Was war das Erstaunlichste, das du diese Woche erlebt hast?",
+        "Welche Herausforderung hast du in letzter Zeit gemeistert?",
+        "Was inspiriert dich an deinem Job?",
+        "Welchen Film könntest du immer wieder sehen?",
+        "Was ist dein Lieblingssnack an einem stressigen Tag?",
+        "Welches Erlebnis hat dir neue Energie gegeben?",
+        "Was war der schönste Moment an deinem Arbeitsplatz?",
+        "Wie entspannst du dich an einem regnerischen Tag?",
+        "Welches Buch liegt gerade auf deinem Nachttisch?",
+        "Was war dein unvergesslichster Moment in der letzten Woche?",
+        "Welche neue Fähigkeit möchtest du erlernen?",
+        "Was ist dein Lieblingszitat, das dich motiviert?",
+        "Welcher Duft erinnert dich an glückliche Zeiten?",
+        "Was war dein Highlight am Wochenende?",
+        "Wie bleibst du kreativ, wenn du mal einen Tiefpunkt hast?",
+        "Welches Abenteuer steht bei dir als Nächstes an?",
+        "Was ist dein Geheimnis, um den Alltagsstress zu bewältigen?",
+        "Welchen Kurs oder Workshop würdest du gerne besuchen?",
+        "Was ist dein Traum für die Zukunft?",
+        "Welches Erlebnis hat dich diese Woche zum Nachdenken gebracht?",
+        "Was war das Mutigste, das du diese Woche getan hast?",
+        "Welches Lied beschreibt deine aktuelle Stimmung am besten?",
+        "Was ist deine liebste Art, einen Sonntag zu verbringen?",
+        "Welchen Ort in der Natur besuchst du am liebsten?",
+        "Was inspiriert dich, neue Wege zu gehen?",
+        "Welches neue Restaurant oder Café hast du kürzlich entdeckt?",
+        "Was ist dein Lieblingsmoment am Tagesende?",
+        "Welche Herausforderung möchtest du in dieser Woche annehmen?",
+        "Was ist dein bestes Geheimnis, um Energie zu tanken?",
+        "Welches Erlebnis hat dich diese Woche besonders berührt?",
+        "Wie findest du Ruhe in hektischen Zeiten?",
+        "Was war dein kreativer Höhepunkt in letzter Zeit?",
+        "Welches neue Hobby würdest du gern starten?",
+        "Was ist dein liebster Weg, den Alltag zu entschleunigen?",
+        "Welches Ziel möchtest du in dieser Woche erreichen?",
+        "Was ist deine liebste Erinnerung an vergangene Wochenenden?",
+        "Welches kleine Detail macht deinen Tag besonders?",
+        "Was ist dein persönlicher Tipp gegen Stress?",
+        "Welches Erlebnis hat dich diese Woche zum Schmunzeln gebracht?",
+        "Wie findest du Balance zwischen Arbeit und Freizeit?",
+        "Was inspiriert dich, wenn du kreativ sein möchtest?",
+        "Welches Bild oder Foto hat dich diese Woche beeindruckt?",
+        "Was ist dein Lieblingsgeruch, der Erinnerungen weckt?",
+        "Welcher Tag der Woche ist für dich der besondere und warum?",
+        "Was hast du in letzter Zeit gemacht, das dich aus der Routine gerissen hat?",
+        "Welches Erlebnis hat dir einen neuen Blickwinkel eröffnet?",
+        "Was motiviert dich, auch in stressigen Zeiten weiterzumachen?",
+        "Welche kleine Freude im Alltag schätzt du am meisten?",
+        "Welches neue Rezept hast du ausprobiert?",
+        "Was ist dein persönliches Highlight, wenn du zur Arbeit kommst?",
+        "Welche Freizeitaktivität bringt dich am meisten in Schwung?",
+        "Was war dein spontaner Gedanke, der sich als richtig erwiesen hat?",
+        "Welcher Ort hat dir in letzter Zeit besonders gutgetan?",
+        "Was ist das Verrückteste, das du in letzter Zeit gemacht hast?",
+        "Welches Erlebnis hat dir neue Energie verliehen?",
+        "Was war dein erster Gedanke, als du heute Morgen aufgestanden bist?",
+        "Welche kleine Geste von einem Kollegen hat dich berührt?",
+        "Was ist deine liebste Art, das Wochenende einzuläuten?",
+        "Welcher Moment in der Woche war für dich unerwartet schön?",
+        "Was ist dein Lieblingsritual am Abend?",
+        "Welche Aktivität lässt dich den Alltag vergessen?",
+        "Was inspiriert dich an den kleinen Dingen im Leben?",
+        "Welches Ereignis hat dir diese Woche besonders Freude bereitet?",
+        "Was ist dein persönlicher Tipp für einen gelungenen Tag?",
+        "Welchen Film oder welche Serie hast du zuletzt entdeckt?",
+        "Was ist deine erste Erinnerung an den heutigen Tag?",
+        "Welches kleine Detail im Büro macht deinen Arbeitstag angenehmer?",
+        "Was war der beste Teil deines Arbeitsalltags heute?",
+        "Welche Musikrichtung hebt deine Stimmung?",
+        "Was hast du am Wochenende gemacht, das dich glücklich gemacht hat?",
+        "Welcher Moment hat dich heute besonders zum Lachen gebracht?",
+        "Was ist dein persönlicher Ausgleich in stressigen Zeiten?",
+        "Welches Buch hat dir in letzter Zeit neue Ideen gegeben?",
+        "Was ist dein Lieblingsplatz in der Natur?",
+        "Welche Aktivität hilft dir, den Kopf frei zu bekommen?",
+        "Was war der aufregendste Moment in deinem Leben bisher?",
+        "Welches neue Erlebnis planst du in der kommenden Woche?",
+        "Was ist dein Lieblingsgeruch, der dich an Zuhause erinnert?",
+        "Welche kleine Veränderung hast du in letzter Zeit vorgenommen?",
+        "Was inspiriert dich, wenn du an die Zukunft denkst?",
+        "Welcher Satz hat dich heute motiviert?",
+        "Was war das Ungewöhnlichste, das du diese Woche erlebt hast?",
+        "Welche neue Idee hat dir in letzter Zeit den Tag versüßt?",
+        "Was ist dein persönlicher Geheimtipp, um kreativ zu bleiben?",
+        "Welches Erlebnis hat dir in letzter Zeit den Atem geraubt?",
+      ];
+
+      function newQuestion() {
+        const questionElement = document.getElementById("question");
+        const randomIndex = Math.floor(Math.random() * questions.length);
+        questionElement.classList.remove("show");
+        setTimeout(() => {
+          questionElement.innerText = questions[randomIndex];
+          questionElement.classList.add("show");
+        }, 300);
+      }
+
+      window.onload = () => {
+        newQuestion();
+      };
+    </script>
+  </body>
+</html>
