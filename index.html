@@ -14,68 +14,220 @@
       }
       body {
         font-family: "Nunito", sans-serif;
-        background: #eeeeee;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         margin: 0;
         padding: 20px;
         display: flex;
         justify-content: center;
         align-items: center;
         min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
       }
+      
+      body::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+          radial-gradient(circle at 20% 50%, rgba(64, 147, 122, 0.1) 0%, transparent 50%),
+          radial-gradient(circle at 80% 20%, rgba(220, 94, 64, 0.1) 0%, transparent 50%),
+          radial-gradient(circle at 40% 80%, rgba(255, 127, 80, 0.08) 0%, transparent 50%);
+        pointer-events: none;
+      }
+      
       .container {
-        background: #fff;
-        border-radius: 8px;
-        padding: 40px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        max-width: 600px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 24px;
+        padding: 48px;
+        box-shadow: 
+          0 10px 40px rgba(0, 0, 0, 0.1),
+          0 4px 25px rgba(0, 0, 0, 0.08),
+          0 0 0 1px rgba(255, 255, 255, 0.5);
+        max-width: 700px;
         width: 100%;
         text-align: center;
-        transition: transform 0.3s ease;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        z-index: 1;
       }
-      h1,
-      h2 {
+      
+      .container:hover {
+        transform: translateY(-2px);
+        box-shadow: 
+          0 15px 50px rgba(0, 0, 0, 0.12),
+          0 8px 30px rgba(0, 0, 0, 0.1),
+          0 0 0 1px rgba(255, 255, 255, 0.6);
+      }
+      
+      h1 {
         color: #40937a;
-        margin-bottom: 20px;
+        margin: 0 0 40px 0;
+        font-size: 2.5em;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        background: linear-gradient(135deg, #40937a, #4da686);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        position: relative;
       }
-      .question {
-        font-size: 1.5em;
-        font-weight: bold;
-        margin: 20px 0;
-        color: #404040;
-        min-height: 80px;
+      
+      h1::after {
+        content: '';
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(45deg, #dc5e40, #ff7f50);
+        border-radius: 2px;
+      }
+      
+      .question-container {
+        position: relative;
+        margin: 40px 0;
+        min-height: 120px;
         display: flex;
         align-items: center;
         justify-content: center;
-        opacity: 0;
-        transform: translateY(10px);
-        transition: opacity 0.5s ease, transform 0.5s ease;
+        background: linear-gradient(135deg, rgba(64, 147, 122, 0.03), rgba(220, 94, 64, 0.03));
+        border-radius: 16px;
+        padding: 32px;
+        border: 1px solid rgba(64, 147, 122, 0.1);
       }
+      
+      .question {
+        font-size: 1.6em;
+        font-weight: 500;
+        color: #2d3748;
+        line-height: 1.4;
+        opacity: 0;
+        transform: translateY(15px) scale(0.98);
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        max-width: 100%;
+      }
+      
       .question.show {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
       }
+      
+      .button-container {
+        margin-top: 40px;
+      }
+      
       button {
-        background: linear-gradient(45deg, #dc5e40, #ff7f50);
+        background: linear-gradient(135deg, #dc5e40, #ff7f50);
         color: #fff;
         border: none;
-        border-radius: 4px;
-        padding: 10px 20px;
-        font-size: 1em;
+        border-radius: 50px;
+        padding: 16px 32px;
+        font-size: 1.1em;
+        font-weight: 600;
         cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 
+          0 8px 25px rgba(220, 94, 64, 0.3),
+          0 4px 15px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+        text-transform: none;
+        letter-spacing: 0.5px;
+        min-width: 160px;
       }
+      
+      button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+      }
+      
       button:hover {
-        transform: scale(1.02);
-        opacity: 1;
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 
+          0 12px 35px rgba(220, 94, 64, 0.4),
+          0 6px 20px rgba(0, 0, 0, 0.15);
+      }
+      
+      button:hover::before {
+        left: 100%;
+      }
+      
+      button:active {
+        transform: translateY(0) scale(0.98);
+        transition: all 0.1s;
+      }
+      
+      @media (max-width: 768px) {
+        body {
+          padding: 16px;
+        }
+        
+        .container {
+          padding: 32px 24px;
+          border-radius: 20px;
+        }
+        
+        h1 {
+          font-size: 2em;
+          margin-bottom: 32px;
+        }
+        
+        .question-container {
+          margin: 32px 0;
+          padding: 24px;
+          min-height: 100px;
+        }
+        
+        .question {
+          font-size: 1.4em;
+        }
+        
+        button {
+          padding: 14px 28px;
+          font-size: 1em;
+        }
+      }
+      
+      @media (max-width: 480px) {
+        .container {
+          padding: 24px 20px;
+        }
+        
+        h1 {
+          font-size: 1.8em;
+        }
+        
+        .question {
+          font-size: 1.3em;
+        }
+        
+        .question-container {
+          padding: 20px;
+        }
       }
     </style>
   </head>
   <body>
     <div class="container">
       <h1>Icebreaker Fragen</h1>
-      <div class="question" id="question"></div>
-      <button onclick="newQuestion()">Neue Frage</button>
+      <div class="question-container">
+        <div class="question" id="question"></div>
+      </div>
+      <div class="button-container">
+        <button onclick="newQuestion()">Neue Frage</button>
+      </div>
     </div>
 
     <script>
@@ -280,6 +432,116 @@
         "Welche neue Idee hat dir in letzter Zeit den Tag versüßt?",
         "Was ist dein persönlicher Geheimtipp, um kreativ zu bleiben?",
         "Welches Erlebnis hat dir in letzter Zeit den Atem geraubt?",
+        "Was ist dein Lieblingswetter und was machst du dann am liebsten?",
+        "Welcher Kindheitstraum ist bei dir noch nicht in Erfüllung gegangen?",
+        "Was war das letzte Mal, dass du richtig stolz auf dich warst?",
+        "Welche Superkraft hättest du gerne für einen Tag?",
+        "Was ist dein Geheimrezept für einen perfekten Feierabend?",
+        "Welches war das beste Geschenk, das du je erhalten hast?",
+        "Was würdest du tun, wenn Geld keine Rolle spielen würde?",
+        "Welcher Ort auf der Welt fasziniert dich am meisten?",
+        "Was ist das Verrückteste, was auf deiner Bucket List steht?",
+        "Welche Fähigkeit deiner Kollegen bewunderst du am meisten?",
+        "Was war dein peinlichster Moment, über den du heute lachen kannst?",
+        "Welches Kompliment hat dich zuletzt richtig gefreut?",
+        "Was machst du, wenn du dich einsam fühlst?",
+        "Welcher Tag in deinem Leben war perfekt und warum?",
+        "Was ist dein liebstes Familien- oder Freunde-Ritual?",
+        "Welche Lektion hast du auf die harte Tour gelernt?",
+        "Was würdest du gerne mal für einen ganzen Tag ausprobieren?",
+        "Welches ist dein Lieblings-Zitat aus einem Film oder Buch?",
+        "Was war dein größter Wow-Moment in diesem Jahr?",
+        "Welchen Rat gibst du anderen am häufigsten?",
+        "Was ist dein guilty pleasure, für das du dich nicht schämst?",
+        "Welche Tradition möchtest du gerne starten?",
+        "Was war das Mutigste, was du als Kind gemacht hast?",
+        "Welcher Song bringt dich sofort in eine bestimmte Stimmung?",
+        "Was ist dein persönlicher Geheimtipp für schwierige Tage?",
+        "Welches Abenteuer möchtest du unbedingt noch erleben?",
+        "Was liebst du an deiner Persönlichkeit am meisten?",
+        "Welcher Moment diese Woche hat dich am meisten überrascht?",
+        "Was würdest du gerne perfekt beherrschen?",
+        "Welche schlechte Angewohnheit hast du erfolgreich abgelegt?",
+        "Was ist dein Lieblingschaos, das du gerne um dich hast?",
+        "Welcher Geruch versetzt dich sofort in deine Kindheit zurück?",
+        "Was machst du, um deine Kreativität zu fördern?",
+        "Welches Erlebnis hat deine Sichtweise grundlegend verändert?",
+        "Was ist dein bester Tipp für einen gelungenen ersten Eindruck?",
+        "Welche Eigenschaft schätzt du an anderen Menschen am meisten?",
+        "Was war dein bisher lustigstes Missverständnis?",
+        "Welchen Beruf hättest du in einer anderen Zeit gerne ausgeübt?",
+        "Was ist dein Lieblings-'Was wäre wenn'-Szenario?",
+        "Welche Kleinigkeit kann deinen ganzen Tag versüßen?",
+        "Was war das beste Team-Erlebnis, das du hattest?",
+        "Welches Hobby deiner Kindheit vermisst du?",
+        "Was ist dein persönlicher Motivations-Hack?",
+        "Welcher spontane Einfall hat sich als genial herausgestellt?",
+        "Was machst du anders als die meisten Menschen?",
+        "Welches war dein stolzester 'Das habe ich geschafft'-Moment?",
+        "Was ist dein Lieblingsweg, um jemandem eine Freude zu machen?",
+        "Welche Frage stellst du dir selbst am häufigsten?",
+        "Was war dein bisher bestes 'Ja, warum nicht!'-Erlebnis?",
+        "Welcher kleine Luxus ist für dich unverzichtbar?",
+        "Was würdest du gerne öfter von anderen hören?",
+        "Welches war dein bisher coolstes Zufalls-Erlebnis?",
+        "Was ist dein Geheimrezept für gute Gespräche?",
+        "Welchen Ort besuchst du, wenn du nachdenken möchtest?",
+        "Was war das Ungewöhnlichste, was du heute gelernt hast?",
+        "Welche Persönlichkeitseigenschaft möchtest du stärken?",
+        "Was ist dein bester Tipp für den Umgang mit Stress?",
+        "Welches Ereignis hat dich zuletzt richtig berührt?",
+        "Was machst du, um in schwierigen Zeiten optimistisch zu bleiben?",
+        "Welcher Moment der letzten Woche war magisch für dich?",
+        "Was ist dein liebster Weg, um neue Perspektiven zu gewinnen?",
+        "Welches Talent hast du, das die meisten nicht kennen?",
+        "Was war dein bisher schönstes 'Das hätte ich nie gedacht'-Erlebnis?",
+        "Welche Gewohnheit hat dein Leben positiv verändert?",
+        "Was ist dein persönlicher Energiebooster?",
+        "Welcher Satz könnte dein Lebensmotto sein?",
+        "Was war dein bisher bester Spontan-Entschluss?",
+        "Welche Erinnerung bringt dich immer zum Lächeln?",
+        "Was machst du, um dich mit dir selbst zu verbinden?",
+        "Welches war dein bisher herzerwärmendster Moment?",
+        "Was ist dein liebster Weg, um Zeit zu 'verschwenden'?",
+        "Welche Lektion möchtest du an dein jüngeres Ich weitergeben?",
+        "Was war dein bisher überraschendster Erfolg?",
+        "Welcher Ort gibt dir das Gefühl von Heimat?",
+        "Was ist dein persönlicher Glücks-Indikator?",
+        "Welches Erlebnis hat dich zuletzt richtig inspiriert?",
+        "Was machst du, um schwierige Entscheidungen zu treffen?",
+        "Welcher Tag der Woche ist dein Lieblingstag und warum?",
+        "Was war dein bisher schönster Zufall?",
+        "Welche Frage würdest du gerne der ganzen Welt stellen?",
+        "Was ist dein liebster Weg, um Dankbarkeit zu zeigen?",
+        "Welches war dein bisher wertvollstes Geschenk (nicht materiell)?",
+        "Was machst du, wenn du mal richtig albern sein möchtest?",
+        "Welcher Moment hat dich zuletzt richtig stolz gemacht?",
+        "Was ist dein persönlicher Entspannungs-Geheimtipp?",
+        "Welches Erlebnis hat deine Komfortzone am meisten erweitert?",
+        "Was war dein bisher bester 'Aha-Moment'?",
+        "Welche kleine Geste bedeutet dir besonders viel?",
+        "Was ist dein liebster Weg, um dich selbst zu überraschen?",
+        "Welcher Gedanke macht dich sofort glücklich?",
+        "Was war dein bisher mutigster Schritt?",
+        "Welche Eigenschaft an dir hat sich in letzter Zeit entwickelt?",
+        "Was ist dein persönlicher Wohlfühl-Ort zu Hause?",
+        "Welches war dein bisher schönstes Gemeinsam-Erlebnis?",
+        "Was machst du, um deine Träume am Leben zu erhalten?",
+        "Welcher Moment der letzten Zeit war pure Freude?",
+        "Was ist dein liebster Weg, um anderen zu helfen?",
+        "Welches Erlebnis hat dich zuletzt richtig überrascht?",
+        "Was war dein bisher schönster Sonnenaufgang oder Sonnenuntergang?",
+        "Welche Aktivität lässt dich die Zeit vergessen?",
+        "Was ist dein persönlicher Motivations-Satz?",
+        "Welcher Moment hat dich zuletzt tief berührt?",
+        "Was machst du, um deine Batterien wieder aufzuladen?",
+        "Welches war dein bisher schönstes Kompliment?",
+        "Was ist dein liebster Weg, um zu lernen?",
+        "Welche Erinnerung ist dein persönlicher Schatz?",
+        "Was war dein bisher coolstes Abenteuer?",
+        "Welcher Duft bringt dich sofort an einen besonderen Ort?",
+        "Was ist dein persönlicher Geheimtipp für gute Laune?",
+        "Welches Erlebnis möchtest du unbedingt wiederholen?",
       ];
 
       function newQuestion() {
