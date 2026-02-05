@@ -806,36 +806,31 @@
         const ctx = canvas.getContext("2d");
         const text = filteredQuestions[currentIndex];
 
-        // Clean warm background
-        ctx.fillStyle = "#FAFAFA";
+        // Full gradient background (45° Petrol → Emerald per lucoyo CD)
+        const gradient = ctx.createLinearGradient(0, canvas.height, canvas.width, 0);
+        gradient.addColorStop(0, "#32768D");
+        gradient.addColorStop(0.5, "#338485");
+        gradient.addColorStop(1, "#40937A");
+        ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Large gradient circle as accent (top right)
-        const circleX = canvas.width - 180;
-        const circleY = 200;
-        const circleRadius = 280;
-
-        const circleGradient = ctx.createRadialGradient(
-          circleX, circleY, 0,
-          circleX, circleY, circleRadius
+        // Subtle light overlay for depth
+        const overlay = ctx.createRadialGradient(
+          canvas.width * 0.3, canvas.height * 0.3, 0,
+          canvas.width * 0.3, canvas.height * 0.3, canvas.width * 0.8
         );
-        circleGradient.addColorStop(0, "#40937A");
-        circleGradient.addColorStop(0.6, "#338485");
-        circleGradient.addColorStop(1, "#32768D");
+        overlay.addColorStop(0, "rgba(255, 255, 255, 0.08)");
+        overlay.addColorStop(1, "rgba(255, 255, 255, 0)");
+        ctx.fillStyle = overlay;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        ctx.beginPath();
-        ctx.arc(circleX, circleY, circleRadius, 0, Math.PI * 2);
-        ctx.fillStyle = circleGradient;
-        ctx.fill();
+        // Large question text
+        ctx.fillStyle = "#FFFFFF";
+        ctx.font = "700 56px Nunito, sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
 
-        // Question text - large, bold, left-aligned
-        ctx.fillStyle = "#1a1a1a";
-        ctx.font = "700 62px Nunito, sans-serif";
-        ctx.textAlign = "left";
-        ctx.textBaseline = "top";
-
-        const maxWidth = canvas.width - 280;
-        const marginLeft = 80;
+        const maxWidth = canvas.width - 160;
         const words = text.split(" ");
         let lines = [];
         let currentLine = "";
@@ -852,31 +847,19 @@
         });
         lines.push(currentLine);
 
-        const lineHeight = 78;
+        const lineHeight = 72;
         const totalHeight = lines.length * lineHeight;
-        const startY = (canvas.height - totalHeight) / 2 - 30;
+        const startY = canvas.height / 2 - totalHeight / 2 + lineHeight / 2 - 15;
 
         lines.forEach((line, index) => {
-          ctx.fillText(line, marginLeft, startY + index * lineHeight);
+          ctx.fillText(line, canvas.width / 2, startY + index * lineHeight);
         });
 
-        // Accent line
-        const lineY = startY + totalHeight + 30;
-        const accentGradient = ctx.createLinearGradient(marginLeft, 0, marginLeft + 100, 0);
-        accentGradient.addColorStop(0, "#32768D");
-        accentGradient.addColorStop(1, "#40937A");
-        ctx.fillStyle = accentGradient;
-        ctx.fillRect(marginLeft, lineY, 100, 4);
-
-        // Branding
-        ctx.fillStyle = "#666666";
-        ctx.font = "600 16px Nunito, sans-serif";
-        ctx.textAlign = "left";
-        ctx.fillText("ICEBREAKER", marginLeft, canvas.height - 45);
-
-        ctx.fillStyle = "#999999";
-        ctx.font = "500 16px Nunito, sans-serif";
-        ctx.fillText("  ·  lucoyo", marginLeft + ctx.measureText("ICEBREAKER").width, canvas.height - 45);
+        // Minimal branding at bottom
+        ctx.fillStyle = "rgba(255, 255, 255, 0.6)";
+        ctx.font = "600 15px Nunito, sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("ICEBREAKER  ·  lucoyo", canvas.width / 2, canvas.height - 35);
 
         return canvas;
       }
