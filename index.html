@@ -3,39 +3,56 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Icebreaker</title>
+    <title>Icebreaker – lucoyo</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <style>
+      /* lucoyo Corporate Design Colors */
       :root {
-        --bg-primary: #0f0f0f;
-        --bg-secondary: #1a1a1a;
-        --bg-card: #141414;
-        --text-primary: #fafafa;
-        --text-secondary: #a1a1a1;
-        --text-muted: #666;
-        --accent: #6366f1;
-        --accent-light: #818cf8;
-        --accent-glow: rgba(99, 102, 241, 0.4);
-        --border: rgba(255, 255, 255, 0.08);
-        --border-hover: rgba(255, 255, 255, 0.15);
-        --success: #10b981;
-      }
+        /* Primary Colors */
+        --petrol: #32768D;
+        --seegruen: #338485;
+        --emerald: #40937A;
 
-      [data-theme="light"] {
-        --bg-primary: #f8f9fa;
-        --bg-secondary: #e9ecef;
-        --bg-card: #ffffff;
-        --text-primary: #1a1a1a;
-        --text-secondary: #6b7280;
-        --text-muted: #9ca3af;
+        /* Secondary Colors */
+        --mandel: #F1EBE4;
+        --hellgrau: #EEEEEE;
+        --kastanienbraun: #503D3F;
+        --schwarz: #141414;
+        --weiss: #FFFFFF;
+        --dunkelgrau: #404040;
+
+        /* Accent */
+        --opal: #DC5E40;
+
+        /* Light Theme (default) */
+        --bg-primary: var(--mandel);
+        --bg-secondary: var(--hellgrau);
+        --bg-card: var(--weiss);
+        --text-primary: var(--schwarz);
+        --text-secondary: var(--dunkelgrau);
+        --text-muted: #888;
+        --accent: var(--emerald);
+        --accent-secondary: var(--opal);
         --border: rgba(0, 0, 0, 0.08);
         --border-hover: rgba(0, 0, 0, 0.15);
-        --accent-glow: rgba(99, 102, 241, 0.2);
+        --success: var(--emerald);
+        --gradient: linear-gradient(45deg, var(--petrol), var(--emerald));
+      }
+
+      [data-theme="dark"] {
+        --bg-primary: var(--schwarz);
+        --bg-secondary: #1a1a1a;
+        --bg-card: #1e1e1e;
+        --text-primary: var(--weiss);
+        --text-secondary: var(--hellgrau);
+        --text-muted: #888;
+        --border: rgba(255, 255, 255, 0.08);
+        --border-hover: rgba(255, 255, 255, 0.15);
       }
 
       * {
@@ -49,7 +66,7 @@
       }
 
       body {
-        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        font-family: "Nunito", -apple-system, BlinkMacSystemFont, sans-serif;
         background: var(--bg-primary);
         color: var(--text-primary);
         min-height: 100vh;
@@ -73,23 +90,17 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: radial-gradient(
-            ellipse 80% 50% at 50% -20%,
-            rgba(99, 102, 241, 0.15),
-            transparent
-          ),
-          radial-gradient(
-            ellipse 60% 40% at 100% 100%,
-            rgba(139, 92, 246, 0.1),
-            transparent
-          );
+        background:
+          radial-gradient(ellipse 80% 50% at 50% -20%, rgba(64, 147, 122, 0.12), transparent),
+          radial-gradient(ellipse 60% 40% at 100% 100%, rgba(50, 118, 141, 0.08), transparent);
         pointer-events: none;
-        opacity: 1;
         transition: opacity 0.3s ease;
       }
 
-      [data-theme="light"] body::before {
-        opacity: 0.5;
+      [data-theme="dark"] body::before {
+        background:
+          radial-gradient(ellipse 80% 50% at 50% -20%, rgba(64, 147, 122, 0.15), transparent),
+          radial-gradient(ellipse 60% 40% at 100% 100%, rgba(50, 118, 141, 0.1), transparent);
       }
 
       .app {
@@ -105,42 +116,46 @@
       header {
         display: flex;
         justify-content: space-between;
-        align-items: flex-start;
+        align-items: center;
       }
 
-      .header-left {
-        text-align: left;
+      .logo-container {
+        display: flex;
+        align-items: center;
+        gap: 16px;
       }
 
       .logo {
+        height: 40px;
+        width: auto;
+      }
+
+      .header-title {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .subtitle {
         font-size: 0.75rem;
         font-weight: 600;
-        letter-spacing: 0.2em;
+        letter-spacing: 0.15em;
         text-transform: uppercase;
-        color: var(--accent-light);
-        margin-bottom: 4px;
+        color: var(--emerald);
       }
 
       h1 {
-        font-size: 2rem;
+        font-size: 1.5rem;
         font-weight: 700;
-        letter-spacing: -0.03em;
-        line-height: 1.1;
-        background: linear-gradient(
-          to bottom right,
-          var(--text-primary) 30%,
-          var(--text-secondary)
-        );
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+        color: var(--text-primary);
       }
 
       .theme-toggle {
         background: var(--bg-secondary);
         border: 1px solid var(--border);
         border-radius: 100px;
-        padding: 8px;
+        padding: 10px;
         cursor: pointer;
         display: flex;
         align-items: center;
@@ -159,12 +174,15 @@
         height: 18px;
       }
 
-      .theme-toggle .icon-moon,
-      [data-theme="light"] .theme-toggle .icon-sun {
+      .theme-toggle .icon-moon {
         display: none;
       }
 
-      [data-theme="light"] .theme-toggle .icon-moon {
+      [data-theme="dark"] .theme-toggle .icon-sun {
+        display: none;
+      }
+
+      [data-theme="dark"] .theme-toggle .icon-moon {
         display: block;
       }
 
@@ -182,7 +200,7 @@
         padding: 8px 16px;
         font-family: inherit;
         font-size: 0.8125rem;
-        font-weight: 500;
+        font-weight: 600;
         color: var(--text-muted);
         cursor: pointer;
         transition: all 0.2s ease;
@@ -194,15 +212,15 @@
       }
 
       .filter-btn.active {
-        background: var(--accent);
-        border-color: var(--accent);
+        background: var(--gradient);
+        border-color: transparent;
         color: white;
       }
 
       .card {
         background: var(--bg-card);
         border: 1px solid var(--border);
-        border-radius: 24px;
+        border-radius: 20px;
         padding: 40px;
         position: relative;
         overflow: hidden;
@@ -211,7 +229,7 @@
 
       .card:hover {
         border-color: var(--border-hover);
-        box-shadow: 0 0 60px -12px var(--accent-glow);
+        box-shadow: 0 8px 40px -12px rgba(64, 147, 122, 0.2);
       }
 
       .card::before {
@@ -220,13 +238,8 @@
         top: 0;
         left: 0;
         right: 0;
-        height: 1px;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(255, 255, 255, 0.1),
-          transparent
-        );
+        height: 3px;
+        background: var(--gradient);
       }
 
       .question-wrapper {
@@ -240,7 +253,7 @@
       .question {
         font-size: 1.375rem;
         font-weight: 500;
-        line-height: 1.5;
+        line-height: 1.6;
         text-align: center;
         color: var(--text-primary);
         opacity: 0;
@@ -266,14 +279,14 @@
         align-items: center;
         justify-content: center;
         gap: 10px;
-        background: var(--accent);
+        background: var(--gradient);
         color: white;
         border: none;
         border-radius: 100px;
         padding: 14px 28px;
         font-family: inherit;
         font-size: 1rem;
-        font-weight: 600;
+        font-weight: 700;
         cursor: pointer;
         transition: all 0.2s ease;
         position: relative;
@@ -284,19 +297,14 @@
         content: "";
         position: absolute;
         inset: 0;
-        background: linear-gradient(
-          to bottom,
-          rgba(255, 255, 255, 0.15),
-          transparent
-        );
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0.15), transparent);
         opacity: 0;
         transition: opacity 0.2s ease;
       }
 
       .primary-btn:hover {
-        background: var(--accent-light);
         transform: translateY(-2px);
-        box-shadow: 0 8px 32px -8px var(--accent-glow);
+        box-shadow: 0 8px 24px -8px rgba(64, 147, 122, 0.5);
       }
 
       .primary-btn:hover::before {
@@ -328,7 +336,7 @@
         padding: 10px 16px;
         font-family: inherit;
         font-size: 0.8125rem;
-        font-weight: 500;
+        font-weight: 600;
         color: var(--text-muted);
         cursor: pointer;
         transition: all 0.2s ease;
@@ -339,7 +347,7 @@
       }
 
       .secondary-btn:hover {
-        color: var(--text-primary);
+        color: var(--emerald);
         background: var(--bg-secondary);
       }
 
@@ -362,9 +370,9 @@
         border-radius: 12px;
         padding: 12px 20px;
         font-size: 0.875rem;
-        font-weight: 500;
+        font-weight: 600;
         color: var(--text-primary);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
         opacity: 0;
         transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         z-index: 100;
@@ -410,9 +418,9 @@
         padding: 4px 10px;
         font-family: inherit;
         font-size: 0.75rem;
+        font-weight: 600;
       }
 
-      /* Hidden canvas for image generation */
       #imageCanvas {
         display: none;
       }
@@ -422,13 +430,21 @@
           padding: 20px;
         }
 
+        .logo {
+          height: 32px;
+        }
+
         h1 {
-          font-size: 1.75rem;
+          font-size: 1.25rem;
+        }
+
+        .subtitle {
+          font-size: 0.6875rem;
         }
 
         .card {
           padding: 32px 24px;
-          border-radius: 20px;
+          border-radius: 16px;
         }
 
         .question-wrapper {
@@ -459,6 +475,10 @@
       }
 
       @media (max-width: 380px) {
+        .header-title {
+          display: none;
+        }
+
         .card {
           padding: 24px 20px;
         }
@@ -490,11 +510,18 @@
   <body>
     <div class="app">
       <header>
-        <div class="header-left">
-          <div class="logo">Icebreaker</div>
-          <h1>Gesprächsstarter</h1>
+        <div class="logo-container">
+          <img
+            src="https://lucoyo.de/wp-content/webp-express/webp-images/uploads/2022/12/Lucoyo_WortBildmarke_Primaer_Bunt_MitHintergrund.png.webp"
+            alt="lucoyo"
+            class="logo"
+          />
+          <div class="header-title">
+            <span class="subtitle">Team Meeting</span>
+            <h1>Icebreaker</h1>
+          </div>
         </div>
-        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Theme wechseln">
           <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="5"/>
             <line x1="12" y1="1" x2="12" y2="3"/>
@@ -775,50 +802,41 @@
         const canvas = document.getElementById("imageCanvas");
         const ctx = canvas.getContext("2d");
         const text = filteredQuestions[currentIndex];
+        const isDark = document.documentElement.getAttribute("data-theme") === "dark";
 
-        // Create gradient background
-        const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-        const isDark = document.documentElement.getAttribute("data-theme") !== "light";
-
-        if (isDark) {
-          gradient.addColorStop(0, "#1a1a2e");
-          gradient.addColorStop(0.5, "#16213e");
-          gradient.addColorStop(1, "#0f0f23");
-        } else {
-          gradient.addColorStop(0, "#667eea");
-          gradient.addColorStop(0.5, "#764ba2");
-          gradient.addColorStop(1, "#6B8DD6");
-        }
+        // lucoyo gradient background (45° from Petrol to Emerald)
+        const gradient = ctx.createLinearGradient(0, canvas.height, canvas.width, 0);
+        gradient.addColorStop(0, "#32768D"); // Petrol
+        gradient.addColorStop(1, "#40937A"); // Emerald
 
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Add subtle pattern overlay
-        ctx.fillStyle = isDark ? "rgba(99, 102, 241, 0.1)" : "rgba(255, 255, 255, 0.1)";
-        for (let i = 0; i < 50; i++) {
+        // Subtle overlay pattern
+        ctx.fillStyle = "rgba(255, 255, 255, 0.05)";
+        for (let i = 0; i < 30; i++) {
           const x = Math.random() * canvas.width;
           const y = Math.random() * canvas.height;
-          const radius = Math.random() * 100 + 50;
+          const radius = Math.random() * 80 + 40;
           ctx.beginPath();
           ctx.arc(x, y, radius, 0, Math.PI * 2);
           ctx.fill();
         }
 
-        // Add border/frame
-        ctx.strokeStyle = isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.3)";
+        // Border frame
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
         ctx.lineWidth = 2;
         ctx.strokeRect(40, 40, canvas.width - 80, canvas.height - 80);
 
-        // Add "Icebreaker" label
-        ctx.fillStyle = isDark ? "rgba(255, 255, 255, 0.6)" : "rgba(255, 255, 255, 0.9)";
-        ctx.font = "600 14px Inter, sans-serif";
-        ctx.letterSpacing = "4px";
+        // lucoyo branding
+        ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
+        ctx.font = "600 14px Nunito, sans-serif";
         ctx.textAlign = "center";
-        ctx.fillText("ICEBREAKER", canvas.width / 2, 90);
+        ctx.fillText("LUCOYO ICEBREAKER", canvas.width / 2, 85);
 
-        // Draw question text with word wrap
-        ctx.fillStyle = isDark ? "#ffffff" : "#ffffff";
-        ctx.font = "600 42px Inter, sans-serif";
+        // Question text
+        ctx.fillStyle = "#FFFFFF";
+        ctx.font = "600 40px Nunito, sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
 
@@ -839,7 +857,7 @@
         });
         lines.push(currentLine);
 
-        const lineHeight = 56;
+        const lineHeight = 54;
         const totalHeight = lines.length * lineHeight;
         const startY = (canvas.height - totalHeight) / 2 + 20;
 
@@ -849,7 +867,7 @@
 
         // Download
         const link = document.createElement("a");
-        link.download = "icebreaker-frage.png";
+        link.download = "lucoyo-icebreaker.png";
         link.href = canvas.toDataURL("image/png");
         link.click();
 
@@ -859,24 +877,18 @@
       function toggleTheme() {
         const html = document.documentElement;
         const currentTheme = html.getAttribute("data-theme");
-        const newTheme = currentTheme === "light" ? "dark" : "light";
+        const newTheme = currentTheme === "dark" ? "light" : "dark";
 
-        if (newTheme === "dark") {
-          html.removeAttribute("data-theme");
-        } else {
-          html.setAttribute("data-theme", newTheme);
-        }
-
-        localStorage.setItem("theme", newTheme);
+        html.setAttribute("data-theme", newTheme);
+        localStorage.setItem("lucoyo-icebreaker-theme", newTheme);
       }
 
       function initTheme() {
-        const savedTheme = localStorage.getItem("theme");
-        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-        if (savedTheme === "light" || (!savedTheme && !prefersDark)) {
-          document.documentElement.setAttribute("data-theme", "light");
+        const savedTheme = localStorage.getItem("lucoyo-icebreaker-theme");
+        if (savedTheme) {
+          document.documentElement.setAttribute("data-theme", savedTheme);
         }
+        // Default is light theme (matches lucoyo CD - light backgrounds)
       }
 
       function init() {
