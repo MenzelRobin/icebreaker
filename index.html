@@ -566,13 +566,13 @@
               </svg>
               <span>Kopieren</span>
             </button>
-            <button class="secondary-btn" onclick="downloadImage()">
+            <button class="secondary-btn" onclick="copyImage()" id="imageBtn">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
                 <circle cx="8.5" cy="8.5" r="1.5"/>
                 <polyline points="21 15 16 10 5 21"/>
               </svg>
-              <span>Als Bild</span>
+              <span>Bild kopieren</span>
             </button>
           </div>
         </div>
@@ -798,49 +798,29 @@
         });
       }
 
-      function downloadImage() {
+      function generateImage() {
         const canvas = document.getElementById("imageCanvas");
         const ctx = canvas.getContext("2d");
         const text = filteredQuestions[currentIndex];
-        const isDark = document.documentElement.getAttribute("data-theme") === "dark";
 
-        // lucoyo gradient background (45° from Petrol to Emerald)
-        const gradient = ctx.createLinearGradient(0, canvas.height, canvas.width, 0);
-        gradient.addColorStop(0, "#32768D"); // Petrol
-        gradient.addColorStop(1, "#40937A"); // Emerald
-
-        ctx.fillStyle = gradient;
+        // Clean white background
+        ctx.fillStyle = "#FFFFFF";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Subtle overlay pattern
-        ctx.fillStyle = "rgba(255, 255, 255, 0.05)";
-        for (let i = 0; i < 30; i++) {
-          const x = Math.random() * canvas.width;
-          const y = Math.random() * canvas.height;
-          const radius = Math.random() * 80 + 40;
-          ctx.beginPath();
-          ctx.arc(x, y, radius, 0, Math.PI * 2);
-          ctx.fill();
-        }
+        // Subtle gradient accent bar at top
+        const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+        gradient.addColorStop(0, "#32768D");
+        gradient.addColorStop(1, "#40937A");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, 6);
 
-        // Border frame
-        ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
-        ctx.lineWidth = 2;
-        ctx.strokeRect(40, 40, canvas.width - 80, canvas.height - 80);
-
-        // lucoyo branding
-        ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
-        ctx.font = "600 14px Nunito, sans-serif";
-        ctx.textAlign = "center";
-        ctx.fillText("LUCOYO ICEBREAKER", canvas.width / 2, 85);
-
-        // Question text
-        ctx.fillStyle = "#FFFFFF";
-        ctx.font = "600 40px Nunito, sans-serif";
+        // Question text - clean and centered
+        ctx.fillStyle = "#141414";
+        ctx.font = "600 44px Nunito, sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
 
-        const maxWidth = canvas.width - 160;
+        const maxWidth = canvas.width - 140;
         const words = text.split(" ");
         let lines = [];
         let currentLine = "";
@@ -857,21 +837,50 @@
         });
         lines.push(currentLine);
 
-        const lineHeight = 54;
+        const lineHeight = 60;
         const totalHeight = lines.length * lineHeight;
-        const startY = (canvas.height - totalHeight) / 2 + 20;
+        const startY = canvas.height / 2 - totalHeight / 2 + lineHeight / 2;
 
         lines.forEach((line, index) => {
           ctx.fillText(line, canvas.width / 2, startY + index * lineHeight);
         });
 
-        // Download
-        const link = document.createElement("a");
-        link.download = "lucoyo-icebreaker.png";
-        link.href = canvas.toDataURL("image/png");
-        link.click();
+        // Small branding at bottom
+        ctx.fillStyle = "#999999";
+        ctx.font = "500 16px Nunito, sans-serif";
+        ctx.fillText("lucoyo Icebreaker", canvas.width / 2, canvas.height - 30);
 
-        showToast("Bild heruntergeladen!");
+        return canvas;
+      }
+
+      async function copyImage() {
+        const imageBtn = document.getElementById("imageBtn");
+
+        try {
+          const canvas = generateImage();
+
+          canvas.toBlob(async (blob) => {
+            try {
+              await navigator.clipboard.write([
+                new ClipboardItem({ "image/png": blob })
+              ]);
+              imageBtn.classList.add("copied");
+              showToast("Bild in Zwischenablage kopiert!");
+              setTimeout(() => {
+                imageBtn.classList.remove("copied");
+              }, 2000);
+            } catch (err) {
+              // Fallback: Download if clipboard fails
+              const link = document.createElement("a");
+              link.download = "lucoyo-icebreaker.png";
+              link.href = canvas.toDataURL("image/png");
+              link.click();
+              showToast("Bild heruntergeladen!");
+            }
+          }, "image/png");
+        } catch (err) {
+          showToast("Fehler beim Erstellen des Bildes");
+        }
       }
 
       function toggleTheme() {
