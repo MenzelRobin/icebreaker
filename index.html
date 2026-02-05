@@ -806,31 +806,31 @@
         const ctx = canvas.getContext("2d");
         const text = filteredQuestions[currentIndex];
 
-        // Warm off-white background
-        ctx.fillStyle = "#FAFAF8";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        // Gradient accent bar on left
-        const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+        // Full gradient background (45° Petrol → Emerald per lucoyo CD)
+        const gradient = ctx.createLinearGradient(0, canvas.height, canvas.width, 0);
         gradient.addColorStop(0, "#32768D");
+        gradient.addColorStop(0.5, "#338485");
         gradient.addColorStop(1, "#40937A");
         ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, 8, canvas.height);
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Large decorative quotation mark
-        ctx.fillStyle = "rgba(64, 147, 122, 0.12)";
-        ctx.font = "700 280px Georgia, serif";
-        ctx.textAlign = "left";
-        ctx.textBaseline = "top";
-        ctx.fillText("„", 60, 40);
+        // Subtle light overlay for depth
+        const overlay = ctx.createRadialGradient(
+          canvas.width * 0.3, canvas.height * 0.3, 0,
+          canvas.width * 0.3, canvas.height * 0.3, canvas.width * 0.8
+        );
+        overlay.addColorStop(0, "rgba(255, 255, 255, 0.08)");
+        overlay.addColorStop(1, "rgba(255, 255, 255, 0)");
+        ctx.fillStyle = overlay;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Question text
-        ctx.fillStyle = "#1a1a1a";
-        ctx.font = "600 42px Nunito, sans-serif";
+        // Large question text
+        ctx.fillStyle = "#FFFFFF";
+        ctx.font = "700 56px Nunito, sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
 
-        const maxWidth = canvas.width - 200;
+        const maxWidth = canvas.width - 160;
         const words = text.split(" ");
         let lines = [];
         let currentLine = "";
@@ -847,35 +847,19 @@
         });
         lines.push(currentLine);
 
-        const lineHeight = 58;
+        const lineHeight = 72;
         const totalHeight = lines.length * lineHeight;
-        const startY = canvas.height / 2 - totalHeight / 2 + lineHeight / 2 - 20;
+        const startY = canvas.height / 2 - totalHeight / 2 + lineHeight / 2 - 15;
 
         lines.forEach((line, index) => {
-          ctx.fillText(line, canvas.width / 2 + 4, startY + index * lineHeight);
+          ctx.fillText(line, canvas.width / 2, startY + index * lineHeight);
         });
 
-        // Bottom section
-        const bottomY = canvas.height - 50;
-
-        // Subtle separator line
-        ctx.strokeStyle = "rgba(0, 0, 0, 0.08)";
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(80, bottomY - 20);
-        ctx.lineTo(canvas.width - 80, bottomY - 20);
-        ctx.stroke();
-
-        // Branding
-        ctx.fillStyle = "#32768D";
-        ctx.font = "700 14px Nunito, sans-serif";
-        ctx.textAlign = "left";
-        ctx.fillText("ICEBREAKER", 80, bottomY + 8);
-
-        ctx.fillStyle = "#888888";
-        ctx.font = "500 14px Nunito, sans-serif";
-        ctx.textAlign = "right";
-        ctx.fillText("lucoyo.de", canvas.width - 80, bottomY + 8);
+        // Minimal branding at bottom
+        ctx.fillStyle = "rgba(255, 255, 255, 0.6)";
+        ctx.font = "600 15px Nunito, sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("ICEBREAKER  ·  lucoyo", canvas.width / 2, canvas.height - 35);
 
         return canvas;
       }
