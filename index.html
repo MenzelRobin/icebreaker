@@ -17,11 +17,25 @@
         --bg-card: #141414;
         --text-primary: #fafafa;
         --text-secondary: #a1a1a1;
+        --text-muted: #666;
         --accent: #6366f1;
         --accent-light: #818cf8;
         --accent-glow: rgba(99, 102, 241, 0.4);
         --border: rgba(255, 255, 255, 0.08);
         --border-hover: rgba(255, 255, 255, 0.15);
+        --success: #10b981;
+      }
+
+      [data-theme="light"] {
+        --bg-primary: #f8f9fa;
+        --bg-secondary: #e9ecef;
+        --bg-card: #ffffff;
+        --text-primary: #1a1a1a;
+        --text-secondary: #6b7280;
+        --text-muted: #9ca3af;
+        --border: rgba(0, 0, 0, 0.08);
+        --border-hover: rgba(0, 0, 0, 0.15);
+        --accent-glow: rgba(99, 102, 241, 0.2);
       }
 
       * {
@@ -49,6 +63,7 @@
         overflow-x: hidden;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        transition: background 0.3s ease, color 0.3s ease;
       }
 
       body::before {
@@ -69,6 +84,12 @@
             transparent
           );
         pointer-events: none;
+        opacity: 1;
+        transition: opacity 0.3s ease;
+      }
+
+      [data-theme="light"] body::before {
+        opacity: 0.5;
       }
 
       .app {
@@ -76,13 +97,19 @@
         max-width: 640px;
         display: flex;
         flex-direction: column;
-        gap: 32px;
+        gap: 24px;
         position: relative;
         z-index: 1;
       }
 
       header {
-        text-align: center;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+
+      .header-left {
+        text-align: left;
       }
 
       .logo {
@@ -91,11 +118,11 @@
         letter-spacing: 0.2em;
         text-transform: uppercase;
         color: var(--accent-light);
-        margin-bottom: 8px;
+        margin-bottom: 4px;
       }
 
       h1 {
-        font-size: 2.5rem;
+        font-size: 2rem;
         font-weight: 700;
         letter-spacing: -0.03em;
         line-height: 1.1;
@@ -109,14 +136,77 @@
         background-clip: text;
       }
 
+      .theme-toggle {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: 100px;
+        padding: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        color: var(--text-secondary);
+      }
+
+      .theme-toggle:hover {
+        border-color: var(--border-hover);
+        color: var(--text-primary);
+      }
+
+      .theme-toggle svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .theme-toggle .icon-moon,
+      [data-theme="light"] .theme-toggle .icon-sun {
+        display: none;
+      }
+
+      [data-theme="light"] .theme-toggle .icon-moon {
+        display: block;
+      }
+
+      .filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+      }
+
+      .filter-btn {
+        background: transparent;
+        border: 1px solid var(--border);
+        border-radius: 100px;
+        padding: 8px 16px;
+        font-family: inherit;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        color: var(--text-muted);
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .filter-btn:hover {
+        border-color: var(--border-hover);
+        color: var(--text-secondary);
+      }
+
+      .filter-btn.active {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: white;
+      }
+
       .card {
         background: var(--bg-card);
         border: 1px solid var(--border);
         border-radius: 24px;
-        padding: 48px 40px;
+        padding: 40px;
         position: relative;
         overflow: hidden;
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
       }
 
       .card:hover {
@@ -140,14 +230,15 @@
       }
 
       .question-wrapper {
-        min-height: 140px;
+        min-height: 120px;
         display: flex;
         align-items: center;
         justify-content: center;
+        margin-bottom: 24px;
       }
 
       .question {
-        font-size: 1.5rem;
+        font-size: 1.375rem;
         font-weight: 500;
         line-height: 1.5;
         text-align: center;
@@ -165,11 +256,12 @@
 
       .actions {
         display: flex;
-        justify-content: center;
-        padding-top: 8px;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
       }
 
-      button {
+      .primary-btn {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -178,7 +270,7 @@
         color: white;
         border: none;
         border-radius: 100px;
-        padding: 16px 32px;
+        padding: 14px 28px;
         font-family: inherit;
         font-size: 1rem;
         font-weight: 600;
@@ -188,7 +280,7 @@
         overflow: hidden;
       }
 
-      button::before {
+      .primary-btn::before {
         content: "";
         position: absolute;
         inset: 0;
@@ -201,42 +293,113 @@
         transition: opacity 0.2s ease;
       }
 
-      button:hover {
+      .primary-btn:hover {
         background: var(--accent-light);
         transform: translateY(-2px);
         box-shadow: 0 8px 32px -8px var(--accent-glow);
       }
 
-      button:hover::before {
+      .primary-btn:hover::before {
         opacity: 1;
       }
 
-      button:active {
+      .primary-btn:active {
         transform: translateY(0) scale(0.98);
       }
 
-      button svg {
-        width: 20px;
-        height: 20px;
+      .primary-btn svg {
+        width: 18px;
+        height: 18px;
         transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       }
 
-      button:hover svg {
+      .primary-btn:hover svg {
         transform: rotate(180deg);
       }
 
-      .counter {
+      .secondary-actions {
+        display: flex;
+        gap: 4px;
+      }
+
+      .secondary-btn {
+        background: transparent;
+        border: none;
+        padding: 10px 16px;
+        font-family: inherit;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        color: var(--text-muted);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border-radius: 8px;
+      }
+
+      .secondary-btn:hover {
+        color: var(--text-primary);
+        background: var(--bg-secondary);
+      }
+
+      .secondary-btn svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      .secondary-btn.copied {
+        color: var(--success);
+      }
+
+      .toast {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%) translateY(100px);
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px 20px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--text-primary);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        opacity: 0;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .toast.visible {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+      }
+
+      .toast svg {
+        width: 18px;
+        height: 18px;
+        color: var(--success);
+      }
+
+      footer {
         text-align: center;
+      }
+
+      .counter {
         font-size: 0.875rem;
         color: var(--text-secondary);
         font-variant-numeric: tabular-nums;
+        margin-bottom: 8px;
       }
 
       .keyboard-hint {
         display: flex;
         justify-content: center;
         gap: 6px;
-        color: var(--text-secondary);
+        color: var(--text-muted);
         font-size: 0.8125rem;
       }
 
@@ -249,45 +412,68 @@
         font-size: 0.75rem;
       }
 
+      /* Hidden canvas for image generation */
+      #imageCanvas {
+        display: none;
+      }
+
       @media (max-width: 640px) {
         body {
           padding: 20px;
         }
 
         h1 {
-          font-size: 2rem;
+          font-size: 1.75rem;
         }
 
         .card {
-          padding: 36px 24px;
+          padding: 32px 24px;
           border-radius: 20px;
         }
 
         .question-wrapper {
-          min-height: 120px;
+          min-height: 100px;
         }
 
         .question {
-          font-size: 1.25rem;
+          font-size: 1.1875rem;
         }
 
-        button {
-          padding: 14px 28px;
+        .primary-btn {
+          padding: 14px 24px;
           font-size: 0.9375rem;
         }
 
         .keyboard-hint {
           display: none;
         }
+
+        .filters {
+          gap: 6px;
+        }
+
+        .filter-btn {
+          padding: 6px 12px;
+          font-size: 0.75rem;
+        }
       }
 
       @media (max-width: 380px) {
         .card {
-          padding: 28px 20px;
+          padding: 24px 20px;
         }
 
         .question {
-          font-size: 1.125rem;
+          font-size: 1.0625rem;
+        }
+
+        .secondary-actions {
+          flex-direction: column;
+          width: 100%;
+        }
+
+        .secondary-btn {
+          justify-content: center;
         }
       }
 
@@ -304,30 +490,64 @@
   <body>
     <div class="app">
       <header>
-        <div class="logo">Icebreaker</div>
-        <h1>Gesprächsstarter</h1>
+        <div class="header-left">
+          <div class="logo">Icebreaker</div>
+          <h1>Gesprächsstarter</h1>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
       </header>
+
+      <div class="filters">
+        <button class="filter-btn active" data-category="all">Alle</button>
+        <button class="filter-btn" data-category="leicht">Leicht</button>
+        <button class="filter-btn" data-category="tiefgruendig">Tiefgründig</button>
+        <button class="filter-btn" data-category="team">Team</button>
+      </div>
 
       <main class="card">
         <div class="question-wrapper">
           <p class="question" id="question"></p>
         </div>
         <div class="actions">
-          <button onclick="nextQuestion()" id="nextBtn">
+          <button class="primary-btn" onclick="nextQuestion()">
             <span>Nächste Frage</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
-              <path d="M21 3v5h-5" />
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/>
+              <path d="M21 3v5h-5"/>
             </svg>
           </button>
+          <div class="secondary-actions">
+            <button class="secondary-btn" onclick="copyQuestion()" id="copyBtn">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+              <span>Kopieren</span>
+            </button>
+            <button class="secondary-btn" onclick="downloadImage()">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <polyline points="21 15 16 10 5 21"/>
+              </svg>
+              <span>Als Bild</span>
+            </button>
+          </div>
         </div>
       </main>
 
@@ -342,177 +562,155 @@
       </footer>
     </div>
 
+    <div class="toast" id="toast">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+      <span id="toastMessage">Kopiert!</span>
+    </div>
+
+    <canvas id="imageCanvas" width="1200" height="630"></canvas>
+
     <script>
-      const questions = [
-        // Tiefgründige Selbstreflexion
-        "Gibt es etwas, von dem du schon lange träumst es zu tun? Was hält dich bisher davon ab?",
-        "Was war das Hilfreichste, das du in letzter Zeit gelernt hast?",
-        "Wofür gibst du gerne Geld aus und schaust auch nicht zwingend auf das Preisschild?",
-        "Was tust du regelmäßig und immer wieder, obwohl es dir absolut nicht gefällt?",
-        "Was ist das Beste daran, du zu sein?",
-        "Was tust du, um dich selbst glücklich zu machen?",
-        "Du wirst nach deinem Ableben einmalig wiedergeboren und kannst komplett frei bestimmen als was. Wofür entscheidest du dich?",
-        "Wo möchtest du im Leben stehen, wenn du deinen nächsten runden Geburtstag erreichst?",
-        "Du kannst einen Tag in deinem Leben nochmal leben. Welchen Tag wählst du aus?",
-        "Woran merkst du, dass du dich bei jemandem wirklich wohlfühlst?",
-        "Welche kleine Sache macht deinen Alltag sofort besser?",
-        "Was ist eine Meinung, die du früher hattest, aber inzwischen komplett geändert hast?",
-        "Welche Fähigkeit würdest du gerne haben, wenn du sie morgen einfach 'downloaden' könntest?",
-        "Welche drei Dinge würdest du auf eine einsame Insel mitnehmen (ohne Handy/Internet)?",
-        "Was war dein letzter Moment, in dem du richtig stolz auf dich warst?",
-        "Welche Gewohnheit würdest du gerne loswerden – und warum?",
-        "Was ist etwas, das dich gerade neugierig macht?",
-        "Welche Entscheidung hat dein Leben stärker beeinflusst, als du damals gedacht hast?",
-        "Wenn du ein Jahr lang ein Projekt verfolgen müsstest: Was würdest du bauen, lernen oder erschaffen?",
-        "Was ist dein persönlicher Comfort-Film oder Comfort-Serie und warum?",
-        "Welche Person (real oder fiktiv) würdest du gerne mal einen Abend lang ausfragen?",
-        "Welche Sache hast du dieses Jahr zum ersten Mal gemacht?",
-        "Was ist ein Kompliment, an das du dich bis heute erinnerst?",
-        "Was ist etwas, das du dir als Kind für Erwachsene anders vorgestellt hast?",
-        "Welche Aktivität bringt dich am schnellsten in einen Flow?",
-        "Worüber könntest du 20 Minuten reden, ohne dich vorbereiten zu müssen?",
-        "Wenn du morgen frei hättest und müsstest nichts erledigen: Wie sieht dein Tag aus?",
-        "Was ist ein Satz, der dich in schwierigen Momenten erdet?",
-        "Welche kleine 'unvernünftige' Sache würdest du sofort machen, wenn Geld keine Rolle spielt?",
+      const questions = {
+        leicht: [
+          "Was ist dein guilty pleasure, für das du dich nicht schämst?",
+          "Welches Essen könntest du jeden Tag essen?",
+          "Wenn du ein Tier wärst, welches wärst du?",
+          "Welche Superkraft hättest du gerne für einen Tag?",
+          "Was bringt dich garantiert zum Lachen?",
+          "Was ist dein peinlichster Moment, über den du heute lachen kannst?",
+          "Welchen Promi würdest du gerne zum Abendessen einladen?",
+          "Was würdest du mit einer Million Euro machen?",
+          "Wenn du eine Zeitmaschine hättest, welche Epoche würdest du besuchen?",
+          "Was ist das Verrückteste, das du je gemacht hast?",
+          "Welcher Song bringt dich sofort in eine bestimmte Stimmung?",
+          "Was ist dein Geheimrezept für gute Laune?",
+          "Welche Serie könntest du immer wieder schauen?",
+          "Was ist dein persönlicher Comfort-Film oder Comfort-Serie und warum?",
+          "Welche drei Dinge würdest du auf eine einsame Insel mitnehmen (ohne Handy/Internet)?",
+          "Welche Fähigkeit würdest du gerne haben, wenn du sie morgen einfach 'downloaden' könntest?",
+          "Wenn dein Leben ein Film wäre, welches Genre wäre es?",
+          "Welche Farbe beschreibt deine aktuelle Stimmung?",
+          "Was ist das Ungewöhnlichste, das du besitzt?",
+          "Welche Sprache würdest du gerne sprechen?",
+          "Wenn du einen Tag unsichtbar wärst, was würdest du tun?",
+          "Du wirst nach deinem Ableben einmalig wiedergeboren und kannst komplett frei bestimmen als was. Wofür entscheidest du dich?",
+          "Wofür gibst du gerne Geld aus und schaust auch nicht zwingend auf das Preisschild?",
+          "Welche kleine 'unvernünftige' Sache würdest du sofort machen, wenn Geld keine Rolle spielt?",
+          "Wie sieht dein perfekter Morgen aus?",
+          "Wenn du morgen frei hättest und müsstest nichts erledigen: Wie sieht dein Tag aus?",
+          "Was ist deine schönste Kindheitserinnerung?",
+          "Welcher Geruch versetzt dich sofort in die Vergangenheit?",
+          "Was vermisst du am meisten aus deiner Kindheit?",
+          "Welche Erinnerung bringt dich immer zum Lächeln?",
+        ],
+        tiefgruendig: [
+          "Gibt es etwas, von dem du schon lange träumst es zu tun? Was hält dich bisher davon ab?",
+          "Was war das Hilfreichste, das du in letzter Zeit gelernt hast?",
+          "Was tust du regelmäßig und immer wieder, obwohl es dir absolut nicht gefällt?",
+          "Was ist das Beste daran, du zu sein?",
+          "Was tust du, um dich selbst glücklich zu machen?",
+          "Wo möchtest du im Leben stehen, wenn du deinen nächsten runden Geburtstag erreichst?",
+          "Du kannst einen Tag in deinem Leben nochmal leben. Welchen Tag wählst du aus?",
+          "Woran merkst du, dass du dich bei jemandem wirklich wohlfühlst?",
+          "Welche kleine Sache macht deinen Alltag sofort besser?",
+          "Was ist eine Meinung, die du früher hattest, aber inzwischen komplett geändert hast?",
+          "Was war dein letzter Moment, in dem du richtig stolz auf dich warst?",
+          "Welche Gewohnheit würdest du gerne loswerden – und warum?",
+          "Was ist etwas, das dich gerade neugierig macht?",
+          "Welche Entscheidung hat dein Leben stärker beeinflusst, als du damals gedacht hast?",
+          "Was ist ein Kompliment, an das du dich bis heute erinnerst?",
+          "Was ist etwas, das du dir als Kind für Erwachsene anders vorgestellt hast?",
+          "Welche Aktivität bringt dich am schnellsten in einen Flow?",
+          "Worüber könntest du 20 Minuten reden, ohne dich vorbereiten zu müssen?",
+          "Was ist ein Satz, der dich in schwierigen Momenten erdet?",
+          "Was bedeutet für dich ein erfülltes Leben?",
+          "Welche Eigenschaft an dir magst du am meisten?",
+          "Was würdest du tun, wenn du wüsstest, dass du nicht scheitern kannst?",
+          "Welchen Wert hast du von deinen Eltern übernommen, der dir wichtig ist?",
+          "Wann hast du zuletzt etwas Neues über dich selbst gelernt?",
+          "Was macht dich einzigartig?",
+          "Wofür bist du in deinem Leben am dankbarsten?",
+          "Was war der beste Ratschlag, den du je bekommen hast?",
+          "Was bedeutet Glück für dich?",
+          "Wovor hast du am meisten Angst?",
+          "Was gibt deinem Leben Sinn?",
+          "Wann hast du dich zuletzt richtig lebendig gefühlt?",
+          "Welche Frage stellst du dir selbst am häufigsten?",
+          "Was hält dich nachts manchmal wach?",
+          "Was ist das Wichtigste im Leben?",
+          "Was war die schwierigste Entscheidung, die du je treffen musstest?",
+          "Welchen Fehler würdest du nicht noch einmal machen?",
+          "Was hast du durch eine Niederlage gelernt?",
+          "Welche Angst hast du überwunden?",
+          "Was war dein größter Aha-Moment?",
+          "Welche Herausforderung hat dich am meisten wachsen lassen?",
+          "Was würdest du deinem jüngeren Ich raten?",
+          "Welchen Rat ignorierst du immer wieder, obwohl du weißt, dass er stimmt?",
+          "Welches Erlebnis hat dich geprägt?",
+        ],
+        team: [
+          "Wenn du ein Jahr lang ein Projekt verfolgen müsstest: Was würdest du bauen, lernen oder erschaffen?",
+          "Welche Person (real oder fiktiv) würdest du gerne mal einen Abend lang ausfragen?",
+          "Welche Sache hast du dieses Jahr zum ersten Mal gemacht?",
+          "Was ist das Interessanteste, das du in letzter Zeit gelernt hast?",
+          "Wie zeigst du Menschen, dass sie dir wichtig sind?",
+          "Welche Eigenschaft schätzt du am meisten an deinen Freunden?",
+          "Was ist das Schönste, das jemand jemals für dich getan hat?",
+          "Wie definierst du echte Freundschaft?",
+          "Welche Person hat dein Leben am meisten beeinflusst?",
+          "Was macht für dich ein gutes Gespräch aus?",
+          "Welche kleine Geste bedeutet dir besonders viel?",
+          "Woran erkennst du, dass du jemandem vertrauen kannst?",
+          "Wenn du in 10 Jahren auf heute zurückschaust, was wäre das Wichtigste, das du erreicht hättest?",
+          "Welchen Traum hast du aufgegeben, den du eigentlich noch verwirklichen möchtest?",
+          "Welches Abenteuer steht noch auf deiner Liste?",
+          "Was möchtest du unbedingt noch lernen?",
+          "Wenn du einen anderen Beruf hättest, welcher wäre es?",
+          "Was würdest du mit einem Jahr Auszeit machen?",
+          "Welches Land oder welche Stadt möchtest du unbedingt noch besuchen?",
+          "Wann fühlst du dich bei der Arbeit am erfülltesten?",
+          "Was würdest du tun, wenn du nicht arbeiten müsstest?",
+          "Welche Fähigkeit hat dir beruflich am meisten geholfen?",
+          "Was bedeutet Erfolg für dich?",
+          "Worauf bist du beruflich am meisten stolz?",
+          "Wie trennst du Arbeit und Privatleben?",
+          "Was motiviert dich, jeden Tag aufzustehen?",
+          "Wie gehst du mit Stress um?",
+          "Wie findest du Motivation in schwierigen Zeiten?",
+          "Wie gehst du mit Kritik um?",
+          "Welches Buch hat dein Denken verändert?",
+          "Worüber könntest du stundenlang reden?",
+          "Welches Hobby hast du aufgegeben, das du wieder anfangen möchtest?",
+          "Was würdest du gerne erschaffen, wenn du keine Angst vor dem Scheitern hättest?",
+          "Was inspiriert dich kreativ?",
+          "Welches Ritual hilft dir durch stressige Zeiten?",
+          "Wie tankst du Energie auf, wenn du erschöpft bist?",
+          "Welche Gewohnheit hat dein Leben verbessert?",
+          "Wie belohnst du dich nach einer schwierigen Aufgabe?",
+          "Welcher kleine Luxus ist für dich unverzichtbar?",
+          "Was steht auf deiner Löffelliste ganz oben?",
+        ],
+      };
 
-        // Persönlichkeit & Werte
-        "Was bedeutet für dich ein erfülltes Leben?",
-        "Welche Eigenschaft an dir magst du am meisten?",
-        "Was würdest du tun, wenn du wüsstest, dass du nicht scheitern kannst?",
-        "Welchen Wert hast du von deinen Eltern übernommen, der dir wichtig ist?",
-        "Was ist etwas, das du niemals ändern würdest an dir?",
-        "Wann hast du zuletzt etwas Neues über dich selbst gelernt?",
-        "Welche Lebensweisheit gibst du gerne weiter?",
-        "Was macht dich einzigartig?",
-        "Wofür bist du in deinem Leben am dankbarsten?",
-        "Was war der beste Ratschlag, den du je bekommen hast?",
-
-        // Beziehungen & Menschen
-        "Wie zeigst du Menschen, dass sie dir wichtig sind?",
-        "Welche Eigenschaft schätzt du am meisten an deinen Freunden?",
-        "Was ist das Schönste, das jemand jemals für dich getan hat?",
-        "Wie definierst du echte Freundschaft?",
-        "Welche Person hat dein Leben am meisten beeinflusst?",
-        "Was macht für dich ein gutes Gespräch aus?",
-        "Wie gehst du mit Konflikten um?",
-        "Was hast du von deinem besten Freund oder deiner besten Freundin gelernt?",
-        "Welche kleine Geste bedeutet dir besonders viel?",
-        "Woran erkennst du, dass du jemandem vertrauen kannst?",
-
-        // Träume & Zukunft
-        "Wenn du in 10 Jahren auf heute zurückschaust, was wäre das Wichtigste, das du erreicht hättest?",
-        "Welchen Traum hast du aufgegeben, den du eigentlich noch verwirklichen möchtest?",
-        "Was würdest du tun, wenn du noch einmal 20 wärst?",
-        "Wo siehst du dich in 5 Jahren, wenn alles nach Plan läuft?",
-        "Welches Abenteuer steht noch auf deiner Liste?",
-        "Was möchtest du unbedingt noch lernen?",
-        "Wenn du einen anderen Beruf hättest, welcher wäre es?",
-        "Was würdest du mit einem Jahr Auszeit machen?",
-        "Welches Land oder welche Stadt möchtest du unbedingt noch besuchen?",
-        "Was ist dein größter Traum, den du niemandem erzählst?",
-
-        // Alltag & Gewohnheiten
-        "Wie sieht dein perfekter Morgen aus?",
-        "Welches Ritual hilft dir durch stressige Zeiten?",
-        "Was ist dein guilty pleasure, für das du dich nicht schämst?",
-        "Wie tankst du Energie auf, wenn du erschöpft bist?",
-        "Was ist dein Lieblingsort, um nachzudenken?",
-        "Welche Gewohnheit hat dein Leben verbessert?",
-        "Was machst du, wenn du nicht schlafen kannst?",
-        "Wie belohnst du dich nach einer schwierigen Aufgabe?",
-        "Was ist dein Geheimrezept für gute Laune?",
-        "Welcher kleine Luxus ist für dich unverzichtbar?",
-
-        // Kreativität & Interessen
-        "Welches Buch hat dein Denken verändert?",
-        "Welcher Song bringt dich sofort in eine bestimmte Stimmung?",
-        "Wenn du ein Instrument perfekt spielen könntest, welches wäre es?",
-        "Welcher Film hat dich zuletzt emotional berührt?",
-        "Worüber könntest du stundenlang reden?",
-        "Welches Hobby hast du aufgegeben, das du wieder anfangen möchtest?",
-        "Was würdest du gerne erschaffen, wenn du keine Angst vor dem Scheitern hättest?",
-        "Welche Serie könntest du immer wieder schauen?",
-        "Was inspiriert dich kreativ?",
-        "Welches Kunstwerk oder welche Musik hat dich tief berührt?",
-
-        // Herausforderungen & Wachstum
-        "Was war die schwierigste Entscheidung, die du je treffen musstest?",
-        "Welchen Fehler würdest du nicht noch einmal machen?",
-        "Was hast du durch eine Niederlage gelernt?",
-        "Wie gehst du mit Kritik um?",
-        "Welche Angst hast du überwunden?",
-        "Was war dein größter Aha-Moment?",
-        "Welche Herausforderung hat dich am meisten wachsen lassen?",
-        "Wie findest du Motivation in schwierigen Zeiten?",
-        "Was würdest du deinem jüngeren Ich raten?",
-        "Welchen Rat ignorierst du immer wieder, obwohl du weißt, dass er stimmt?",
-
-        // Spaß & Leichtigkeit
-        "Wenn du ein Tier wärst, welches wärst du?",
-        "Was war das Verrückteste, das du je gemacht hast?",
-        "Welche Superkraft hättest du gerne für einen Tag?",
-        "Was bringt dich garantiert zum Lachen?",
-        "Welches Essen könntest du jeden Tag essen?",
-        "Was ist dein peinlichster Moment, über den du heute lachen kannst?",
-        "Wenn du eine Zeitmaschine hättest, welche Epoche würdest du besuchen?",
-        "Welchen Promi würdest du gerne zum Abendessen einladen?",
-        "Was würdest du mit einer Million Euro machen?",
-        "Wenn du eine Sache an der Welt ändern könntest, was wäre es?",
-
-        // Erinnerungen & Vergangenheit
-        "Welcher Moment in deinem Leben war perfekt?",
-        "Was ist deine schönste Kindheitserinnerung?",
-        "Welcher Geruch versetzt dich sofort in die Vergangenheit?",
-        "Was vermisst du am meisten aus deiner Kindheit?",
-        "Welchen Tag würdest du gerne nochmal erleben?",
-        "Was war das beste Geschenk, das du je bekommen hast?",
-        "Welche Erinnerung bringt dich immer zum Lächeln?",
-        "Was hast du als Kind geglaubt, das sich als falsch herausgestellt hat?",
-        "Welches Erlebnis hat dich geprägt?",
-        "Was würdest du in einer Zeitkapsel für die Zukunft hinterlassen?",
-
-        // Arbeit & Erfolg
-        "Wann fühlst du dich bei der Arbeit am erfülltesten?",
-        "Was würdest du tun, wenn du nicht arbeiten müsstest?",
-        "Welche Fähigkeit hat dir beruflich am meisten geholfen?",
-        "Was bedeutet Erfolg für dich?",
-        "Worauf bist du beruflich am meisten stolz?",
-        "Wie trennst du Arbeit und Privatleben?",
-        "Was motiviert dich, jeden Tag aufzustehen?",
-        "Welchen Job hättest du nie machen wollen?",
-        "Was hast du von deinem besten Chef gelernt?",
-        "Wie gehst du mit Stress um?",
-
-        // Tiefere Gespräche
-        "Was bedeutet Glück für dich?",
-        "Wovor hast du am meisten Angst?",
-        "Was gibt deinem Leben Sinn?",
-        "Wann hast du dich zuletzt richtig lebendig gefühlt?",
-        "Was würdest du ändern, wenn du nochmal von vorne anfangen könntest?",
-        "Welche Frage stellst du dir selbst am häufigsten?",
-        "Was hält dich nachts manchmal wach?",
-        "Wann fühlst du dich am verletzlichsten?",
-        "Was ist das Wichtigste im Leben?",
-        "Welche Frage wolltest du schon immer jemandem stellen?",
-
-        // Spontan & Kreativ
-        "Beschreibe deinen perfekten Tag in drei Worten.",
-        "Wenn dein Leben ein Film wäre, welches Genre wäre es?",
-        "Welche Farbe beschreibt deine aktuelle Stimmung?",
-        "Wenn du eine historische Figur treffen könntest, wen würdest du wählen?",
-        "Was steht auf deiner Löffelliste ganz oben?",
-        "Welchen Trend verstehst du nicht?",
-        "Was ist das Ungewöhnlichste, das du besitzt?",
-        "Welche Sprache würdest du gerne sprechen?",
-        "Wenn du einen Tag unsichtbar wärst, was würdest du tun?",
-        "Was ist das Interessanteste, das du in letzter Zeit gelernt hast?",
-      ];
-
+      let currentCategory = "all";
       let currentIndex = 0;
-      let shuffledQuestions = [];
+      let filteredQuestions = [];
       const questionEl = document.getElementById("question");
       const currentEl = document.getElementById("current");
       const totalEl = document.getElementById("total");
+      const toast = document.getElementById("toast");
+      const toastMessage = document.getElementById("toastMessage");
+      const copyBtn = document.getElementById("copyBtn");
+
+      function getAllQuestions() {
+        return [
+          ...questions.leicht,
+          ...questions.tiefgruendig,
+          ...questions.team,
+        ];
+      }
 
       function shuffle(array) {
         const arr = [...array];
@@ -523,25 +721,173 @@
         return arr;
       }
 
+      function filterQuestions(category) {
+        currentCategory = category;
+        if (category === "all") {
+          filteredQuestions = shuffle(getAllQuestions());
+        } else {
+          filteredQuestions = shuffle([...questions[category]]);
+        }
+        currentIndex = 0;
+        totalEl.textContent = filteredQuestions.length;
+        displayQuestion();
+
+        document.querySelectorAll(".filter-btn").forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.category === category);
+        });
+      }
+
       function displayQuestion() {
         questionEl.classList.remove("visible");
 
         setTimeout(() => {
-          questionEl.textContent = shuffledQuestions[currentIndex];
+          questionEl.textContent = filteredQuestions[currentIndex];
           currentEl.textContent = currentIndex + 1;
           questionEl.classList.add("visible");
         }, 200);
       }
 
       function nextQuestion() {
-        currentIndex = (currentIndex + 1) % shuffledQuestions.length;
+        currentIndex = (currentIndex + 1) % filteredQuestions.length;
         displayQuestion();
       }
 
+      function showToast(message) {
+        toastMessage.textContent = message;
+        toast.classList.add("visible");
+        setTimeout(() => {
+          toast.classList.remove("visible");
+        }, 2000);
+      }
+
+      function copyQuestion() {
+        const text = filteredQuestions[currentIndex];
+        navigator.clipboard.writeText(text).then(() => {
+          copyBtn.classList.add("copied");
+          showToast("Kopiert!");
+          setTimeout(() => {
+            copyBtn.classList.remove("copied");
+          }, 2000);
+        });
+      }
+
+      function downloadImage() {
+        const canvas = document.getElementById("imageCanvas");
+        const ctx = canvas.getContext("2d");
+        const text = filteredQuestions[currentIndex];
+
+        // Create gradient background
+        const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        const isDark = document.documentElement.getAttribute("data-theme") !== "light";
+
+        if (isDark) {
+          gradient.addColorStop(0, "#1a1a2e");
+          gradient.addColorStop(0.5, "#16213e");
+          gradient.addColorStop(1, "#0f0f23");
+        } else {
+          gradient.addColorStop(0, "#667eea");
+          gradient.addColorStop(0.5, "#764ba2");
+          gradient.addColorStop(1, "#6B8DD6");
+        }
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Add subtle pattern overlay
+        ctx.fillStyle = isDark ? "rgba(99, 102, 241, 0.1)" : "rgba(255, 255, 255, 0.1)";
+        for (let i = 0; i < 50; i++) {
+          const x = Math.random() * canvas.width;
+          const y = Math.random() * canvas.height;
+          const radius = Math.random() * 100 + 50;
+          ctx.beginPath();
+          ctx.arc(x, y, radius, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Add border/frame
+        ctx.strokeStyle = isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.3)";
+        ctx.lineWidth = 2;
+        ctx.strokeRect(40, 40, canvas.width - 80, canvas.height - 80);
+
+        // Add "Icebreaker" label
+        ctx.fillStyle = isDark ? "rgba(255, 255, 255, 0.6)" : "rgba(255, 255, 255, 0.9)";
+        ctx.font = "600 14px Inter, sans-serif";
+        ctx.letterSpacing = "4px";
+        ctx.textAlign = "center";
+        ctx.fillText("ICEBREAKER", canvas.width / 2, 90);
+
+        // Draw question text with word wrap
+        ctx.fillStyle = isDark ? "#ffffff" : "#ffffff";
+        ctx.font = "600 42px Inter, sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        const maxWidth = canvas.width - 160;
+        const words = text.split(" ");
+        let lines = [];
+        let currentLine = "";
+
+        words.forEach((word) => {
+          const testLine = currentLine + (currentLine ? " " : "") + word;
+          const metrics = ctx.measureText(testLine);
+          if (metrics.width > maxWidth && currentLine) {
+            lines.push(currentLine);
+            currentLine = word;
+          } else {
+            currentLine = testLine;
+          }
+        });
+        lines.push(currentLine);
+
+        const lineHeight = 56;
+        const totalHeight = lines.length * lineHeight;
+        const startY = (canvas.height - totalHeight) / 2 + 20;
+
+        lines.forEach((line, index) => {
+          ctx.fillText(line, canvas.width / 2, startY + index * lineHeight);
+        });
+
+        // Download
+        const link = document.createElement("a");
+        link.download = "icebreaker-frage.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+
+        showToast("Bild heruntergeladen!");
+      }
+
+      function toggleTheme() {
+        const html = document.documentElement;
+        const currentTheme = html.getAttribute("data-theme");
+        const newTheme = currentTheme === "light" ? "dark" : "light";
+
+        if (newTheme === "dark") {
+          html.removeAttribute("data-theme");
+        } else {
+          html.setAttribute("data-theme", newTheme);
+        }
+
+        localStorage.setItem("theme", newTheme);
+      }
+
+      function initTheme() {
+        const savedTheme = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+        if (savedTheme === "light" || (!savedTheme && !prefersDark)) {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      }
+
       function init() {
-        shuffledQuestions = shuffle(questions);
-        totalEl.textContent = questions.length;
-        displayQuestion();
+        initTheme();
+        filterQuestions("all");
+
+        document.querySelectorAll(".filter-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            filterQuestions(btn.dataset.category);
+          });
+        });
       }
 
       document.addEventListener("keydown", (e) => {
